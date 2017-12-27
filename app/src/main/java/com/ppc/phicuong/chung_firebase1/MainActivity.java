@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.CountDownTimer;
+import android.renderscript.Sampler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,6 +35,8 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import org.w3c.dom.Text;
+
+import static java.lang.String.valueOf;
 
 public class MainActivity extends AppCompatActivity {
     TextView TextDEN1, TextPWM1, TextDEN2, TextPWM2, TextDEN3, TextPWM3, TextDEN4, TextPWM4;
@@ -91,10 +94,12 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue().equals("SANG")) {
                     imageDEN1.setImageResource(R.drawable.hinh1);
+                    swOnOff1.setChecked(true);
                     Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
 
                 } else if (dataSnapshot.getValue().equals("TAT")) {
                     imageDEN1.setImageResource(R.drawable.hinh2);
+                    swOnOff1.setChecked(false);
                     Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
                 }
                 TextDEN1.setText(dataSnapshot.getValue().toString());
@@ -110,10 +115,12 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue().equals("SANG")) {
                     imageDEN2.setImageResource(R.drawable.hinh1);
+                    swOnOff2.setChecked(true);
                     Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
 
                 } else if (dataSnapshot.getValue().equals("TAT")) {
                     imageDEN2.setImageResource(R.drawable.hinh2);
+                    swOnOff2.setChecked(false);
                     Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
                 }
                 TextDEN2.setText(dataSnapshot.getValue().toString());
@@ -129,10 +136,12 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue().equals("SANG")) {
                     imageDEN3.setImageResource(R.drawable.hinh1);
+                    swOnOff3.setChecked(true);
                     Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
 
                 } else if (dataSnapshot.getValue().equals("TAT")) {
                     imageDEN3.setImageResource(R.drawable.hinh2);
+                    swOnOff3.setChecked(false);
                     Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
                 }
                 TextDEN3.setText(dataSnapshot.getValue().toString());
@@ -148,10 +157,12 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue().equals("SANG")) {
                     imageDEN4.setImageResource(R.drawable.hinh1);
+                    swOnOff4.setChecked(true);
                     Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
 
                 } else if (dataSnapshot.getValue().equals("TAT")) {
                     imageDEN4.setImageResource(R.drawable.hinh2);
+                    swOnOff4.setChecked(false);
                     Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
                 }
                 TextDEN4.setText(dataSnapshot.getValue().toString());
@@ -199,7 +210,6 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 TextPWM4.setText(dataSnapshot.getValue().toString());
             }
-
             @Override
             public void onCancelled(FirebaseError firebaseError) {
             }
@@ -257,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress_value1 = progress;
-                myFirebase.child("DEN 1").child("STATE").child("DO SANG").setValue(String.valueOf((seekBar1.getProgress())));
+                myFirebase.child("DEN 1").child("STATE").child("DO SANG").setValue(valueOf((seekBar1.getProgress())));
 
             }
 
@@ -276,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress_value2 = progress;
-                myFirebase.child("DEN 2").child("STATE").child("DO SANG").setValue(String.valueOf((seekBar2.getProgress())));
+                myFirebase.child("DEN 2").child("STATE").child("DO SANG").setValue(valueOf((seekBar2.getProgress())));
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -291,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress_value3 = progress;
-                myFirebase.child("DEN 3").child("STATE").child("DO SANG").setValue(String.valueOf((seekBar3.getProgress())));
+                myFirebase.child("DEN 3").child("STATE").child("DO SANG").setValue(valueOf((seekBar3.getProgress())));
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -307,7 +317,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress_value4 = progress;
-                myFirebase.child("DEN 4").child("STATE").child("DO SANG").setValue(String.valueOf((seekBar4.getProgress())));
+                myFirebase.child("DEN 4").child("STATE").child("DO SANG").setValue(valueOf((seekBar4.getProgress())));
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -322,7 +332,7 @@ public class MainActivity extends AppCompatActivity {
     private void esp8266(){
         final Dialog dialogled = new Dialog(this);
         dialogled.setContentView(R.layout.esp8266);
-        dialogled.setTitle("ĐẶT WIFI CHO ĐÈN");
+        dialogled.setTitle("CÀI ĐẶT WIFI CHO ĐÈN");
         Button bt_setting = dialogled.findViewById(R.id.button);
         et_name= dialogled.findViewById(R.id.editText_SSID);
         et_pass= dialogled.findViewById(R.id.editText2_PASS);
