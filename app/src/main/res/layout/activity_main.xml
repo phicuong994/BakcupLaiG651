@@ -282,7 +282,7 @@
             android:layout_marginTop="324dp"
             android:text="100"
             android:textColor="@color/colorAccent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageDEN4"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView

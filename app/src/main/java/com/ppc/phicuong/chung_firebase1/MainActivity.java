@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         else {
             Toast.makeText(MainActivity.this, "Chào Mừng Đến Với Chúng Tôi", Toast.LENGTH_SHORT).show();
         }
-
         swOnOff1 = (Switch) findViewById(R.id.swOnOff1);
         swOnOff2 = (Switch) findViewById(R.id.swOnOff2);
         swOnOff3 = (Switch) findViewById(R.id.swOnOff3);
@@ -79,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         imageDEN3 = (ImageView) findViewById(R.id.imageDEN3);
         imageDEN4 = (ImageView) findViewById(R.id.imageDEN4);
         btnThoat  = (Button)     findViewById(R.id.buttonThoat);
+
         try {
             Firebase.setAndroidContext(this);
             myFirebase = new Firebase("https://savevalueonfirebase.firebaseio.com");
@@ -125,10 +125,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 TextDEN2.setText(dataSnapshot.getValue().toString());
             }
-
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
             }
         });
         myFirebase.child("DEN 3").child("STATE").child("TRANG THAI").addValueEventListener(new ValueEventListener() {
@@ -174,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         //*********************************************************************************************************
         //*******************TEXTVIEW UPDATE ĐỘ SÁNG ĐÈN*********************************************************
         // ******************************************************************************************************
@@ -182,15 +179,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 TextPWM1.setText(dataSnapshot.getValue().toString());
+
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
             }
         });
+
+
         myFirebase.child("DEN 2").child("STATE").child("DO SANG").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 TextPWM2.setText(dataSnapshot.getValue().toString());
+
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
@@ -200,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 TextPWM3.setText(dataSnapshot.getValue().toString());
+
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
@@ -209,6 +211,46 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 TextPWM4.setText(dataSnapshot.getValue().toString());
+
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+        //*********************************************************************************************************
+        //*******************seek bar UPDATE ĐỘ SÁNG ĐÈN**********************************************************
+        // *******************************************************************************************************
+        myFirebase.child("DEN 1").child("STATE").child("DO SANG").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                seekBar1.setProgress(Integer.valueOf(dataSnapshot.getValue().toString()));
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+        myFirebase.child("DEN 2").child("STATE").child("DO SANG").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                seekBar2.setProgress(Integer.valueOf(dataSnapshot.getValue().toString()));
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+        myFirebase.child("DEN 3").child("STATE").child("DO SANG").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                seekBar3.setProgress(Integer.valueOf(dataSnapshot.getValue().toString()));
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+        myFirebase.child("DEN 4").child("STATE").child("DO SANG").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                seekBar4.setProgress(Integer.valueOf(dataSnapshot.getValue().toString()));
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
@@ -216,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
         });
         //*****************************************************************************************************
         //*******************SWITCH BẬT TẮT ĐÈN****************************************************************
-        // **************************************************************************************************
+        // ****************************************************************************************************
         swOnOff1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -260,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
         });
         //*********************************************************************************************************
         //*******************THANH ĐIỀU CHỈNH ĐỘ SÁNG ĐÈN DÙNG SEEKBAR*********************************************
-        // ******************************************************************************************************
+        //*********************************************************************************************************
         seekBar1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress_value1;
 
@@ -268,7 +310,6 @@ public class MainActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress_value1 = progress;
                 myFirebase.child("DEN 1").child("STATE").child("DO SANG").setValue(valueOf((seekBar1.getProgress())));
-
             }
 
             @Override
