@@ -1,17 +1,24 @@
 package com.ppc.phicuong.chung_firebase1;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -34,15 +41,15 @@ public class MainActivity extends AppCompatActivity {
     Switch swOnOff1, swOnOff2, swOnOff3, swOnOff4;
     SeekBar seekBar1, seekBar2, seekBar3, seekBar4;
     Button btnThoat;
+    WebView wv;
+    EditText et_name, et_pass;
+    private static final int PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION = 1001;
     Firebase myFirebase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //*********************************************************************************************************
-        //*******************KIỂM TRA CONNECT INTERNET, NẾU KHÔNG THÌ KHÔNG THỂ VÀO APP****************************
-        // ******************************************************************************************************
         if (!isConnected(MainActivity.this)) buildDialog(MainActivity.this).show();
         else {
             Toast.makeText(MainActivity.this, "Chào Mừng Đến Với Chúng Tôi", Toast.LENGTH_SHORT).show();
@@ -68,13 +75,14 @@ public class MainActivity extends AppCompatActivity {
         imageDEN2 = (ImageView) findViewById(R.id.imageDEN2);
         imageDEN3 = (ImageView) findViewById(R.id.imageDEN3);
         imageDEN4 = (ImageView) findViewById(R.id.imageDEN4);
-        btnThoat = (Button) findViewById(R.id.buttonThoat);
+        btnThoat  = (Button)     findViewById(R.id.buttonThoat);
         try {
             Firebase.setAndroidContext(this);
             myFirebase = new Firebase("https://savevalueonfirebase.firebaseio.com");
         } catch (Exception e1) {
             Toast.makeText(MainActivity.this, e1.toString(), Toast.LENGTH_SHORT).show();
         }
+
         //*********************************************************************************************************
         //*******************TEXTVIEW UPDATE TRẠNG THÁI ĐÈN********************************************************
         // ******************************************************************************************************
@@ -164,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 TextPWM1.setText(dataSnapshot.getValue().toString());
             }
-
             @Override
             public void onCancelled(FirebaseError firebaseError) {
             }
@@ -174,7 +181,6 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 TextPWM2.setText(dataSnapshot.getValue().toString());
             }
-
             @Override
             public void onCancelled(FirebaseError firebaseError) {
             }
@@ -184,7 +190,6 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 TextPWM3.setText(dataSnapshot.getValue().toString());
             }
-
             @Override
             public void onCancelled(FirebaseError firebaseError) {
             }
@@ -199,9 +204,6 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(FirebaseError firebaseError) {
             }
         });
-
-
-
         //*****************************************************************************************************
         //*******************SWITCH BẬT TẮT ĐÈN****************************************************************
         // **************************************************************************************************
@@ -246,7 +248,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
         //*********************************************************************************************************
         //*******************THANH ĐIỀU CHỈNH ĐỘ SÁNG ĐÈN DÙNG SEEKBAR*********************************************
         // ******************************************************************************************************
@@ -276,13 +277,10 @@ public class MainActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress_value2 = progress;
                 myFirebase.child("DEN 2").child("STATE").child("DO SANG").setValue(String.valueOf((seekBar2.getProgress())));
-
             }
-
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
-
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Toast.makeText(MainActivity.this, "Độ Sáng Thiết Lập Đèn 2: " + progress_value2, Toast.LENGTH_SHORT).show();
@@ -290,18 +288,14 @@ public class MainActivity extends AppCompatActivity {
         });
         seekBar3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress_value3;
-
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress_value3 = progress;
                 myFirebase.child("DEN 3").child("STATE").child("DO SANG").setValue(String.valueOf((seekBar3.getProgress())));
-
             }
-
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
-
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Toast.makeText(MainActivity.this, "Độ Sáng Thiết Lập Đèn 3: " + progress_value3, Toast.LENGTH_SHORT).show();
@@ -314,31 +308,63 @@ public class MainActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress_value4 = progress;
                 myFirebase.child("DEN 4").child("STATE").child("DO SANG").setValue(String.valueOf((seekBar4.getProgress())));
-
             }
-
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
-
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Toast.makeText(MainActivity.this, "Độ Sáng Thiết Lập Đèn 4: " + progress_value4, Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
+    private void esp8266(){
+        final Dialog dialogled = new Dialog(this);
+        dialogled.setContentView(R.layout.esp8266);
+        dialogled.setTitle("ĐẶT WIFI CHO ĐÈN");
+        Button bt_setting = dialogled.findViewById(R.id.button);
+        et_name= dialogled.findViewById(R.id.editText_SSID);
+        et_pass= dialogled.findViewById(R.id.editText2_PASS);
+        wv= dialogled.findViewById(R.id.wv);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION);
+        }
+        bt_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (et_name.getText().toString().equalsIgnoreCase(""))
+                    Toast.makeText(MainActivity.this, "Vui lòng nhập tên mạng WiFi", Toast.LENGTH_SHORT).show();
+                else {
+                    try{
+                        wv.getSettings().setJavaScriptEnabled(true);
+                        wv.loadUrl("http://192.168.4.1:80/HHssid:" + et_name.getText().toString() + "[()]bssid:" + et_pass.getText().toString() + "[()]fn");
+                        Toast.makeText(MainActivity.this, "Đã tến hành cài đặt", Toast.LENGTH_SHORT).show();
+                    }catch (Exception e1)
+                    {
+                        Toast.makeText(MainActivity.this, e1.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+        });
+        dialogled.show();
+    }
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(MainActivity.this, "xin quyen", Toast.LENGTH_SHORT).show();
+        }
+    }
     // *******************************************************************************************************
     //*************************NÚT THOÁT CHƯƠNG TRÌNH*******************************************
     // *******************************************************************************************************
-
     public void clickExit(View v) {
         moveTaskToBack(true);
         android.os.Process.killProcess(android.os.Process.myPid());
         System.exit(1);
     }
-
     // *******************************************************************************************************
     //*****************SỰ KIỆN KIỂM TRA HOẠT ĐỘNG KẾT NỐI VÀ NÚT OK*****************************************
     // *******************************************************************************************************
@@ -357,21 +383,16 @@ public class MainActivity extends AppCompatActivity {
         } else
             return false;
     }
-
     public AlertDialog.Builder buildDialog(Context c) {
-
 
         AlertDialog.Builder builder = new AlertDialog.Builder(c);
         try{
             builder.setTitle("No Internet Connection");
             builder.setMessage("Bạn hãy kết nối Wifi hoặc 3G, Nhấn OK để thoát");
-
-
             builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
                     finish();
                 }
             });
@@ -380,5 +401,21 @@ public class MainActivity extends AppCompatActivity {
             return builder;
         }
     }
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+// Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.esp8266, menu);//Menu Resource, Menu
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.esp8266:
+                esp8266();
+               // Toast.makeText(getApplicationContext(),"Item 2 Selected",Toast.LENGTH_LONG).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }
