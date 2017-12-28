@@ -94,12 +94,12 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue().equals("SANG")) {
                     imageDEN1.setImageResource(R.drawable.hinh1);
-                    swOnOff1.setChecked(true);
+                 //   swOnOff1.setChecked(true);
                     Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
 
                 } else if (dataSnapshot.getValue().equals("TAT")) {
                     imageDEN1.setImageResource(R.drawable.hinh2);
-                    swOnOff1.setChecked(false);
+                 //   swOnOff1.setChecked(false);
                     Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
                 }
                 TextDEN1.setText(dataSnapshot.getValue().toString());
@@ -115,12 +115,12 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue().equals("SANG")) {
                     imageDEN2.setImageResource(R.drawable.hinh1);
-                    swOnOff2.setChecked(true);
+                //    swOnOff2.setChecked(true);
                     Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
 
                 } else if (dataSnapshot.getValue().equals("TAT")) {
                     imageDEN2.setImageResource(R.drawable.hinh2);
-                    swOnOff2.setChecked(false);
+                //    swOnOff2.setChecked(false);
                     Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
                 }
                 TextDEN2.setText(dataSnapshot.getValue().toString());
@@ -134,12 +134,12 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue().equals("SANG")) {
                     imageDEN3.setImageResource(R.drawable.hinh1);
-                    swOnOff3.setChecked(true);
+                //    swOnOff3.setChecked(true);
                     Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
 
                 } else if (dataSnapshot.getValue().equals("TAT")) {
                     imageDEN3.setImageResource(R.drawable.hinh2);
-                    swOnOff3.setChecked(false);
+                 //   swOnOff3.setChecked(false);
                     Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
                 }
                 TextDEN3.setText(dataSnapshot.getValue().toString());
@@ -155,12 +155,12 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue().equals("SANG")) {
                     imageDEN4.setImageResource(R.drawable.hinh1);
-                    swOnOff4.setChecked(true);
+                 //   swOnOff4.setChecked(true);
                     Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
 
                 } else if (dataSnapshot.getValue().equals("TAT")) {
                     imageDEN4.setImageResource(R.drawable.hinh2);
-                    swOnOff4.setChecked(false);
+                 //   swOnOff4.setChecked(false);
                     Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
                 }
                 TextDEN4.setText(dataSnapshot.getValue().toString());
@@ -218,12 +218,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //*********************************************************************************************************
-        //*******************seek bar UPDATE ĐỘ SÁNG ĐÈN**********************************************************
+        //*******************SEEKBAR UPDATE ĐỘ SÁNG ĐÈN**********************************************************
         // *******************************************************************************************************
         myFirebase.child("DEN 1").child("STATE").child("DO SANG").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 seekBar1.setProgress(Integer.valueOf(dataSnapshot.getValue().toString()));
+
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
@@ -251,6 +253,74 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 seekBar4.setProgress(Integer.valueOf(dataSnapshot.getValue().toString()));
+
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+        //*********************************************************************************************************
+        //*******************UPDATE SWITCH BẬT TẮT*****************************************************************
+        // *******************************************************************************************************
+        myFirebase.child("DEN 1").child("STATE").child("TRANG THAI").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue().equals("SANG")) {
+                    swOnOff1.setChecked(true);
+                 //   Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
+
+                } else if (dataSnapshot.getValue().equals("TAT")) {
+                    swOnOff1.setChecked(false);
+                 //   Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+        myFirebase.child("DEN 2").child("STATE").child("TRANG THAI").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue().equals("SANG")) {
+                    swOnOff2.setChecked(true);
+                    //   Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
+
+                } else if (dataSnapshot.getValue().equals("TAT")) {
+                    swOnOff2.setChecked(false);
+                    //   Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+        myFirebase.child("DEN 3").child("STATE").child("TRANG THAI").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue().equals("SANG")) {
+                    swOnOff3.setChecked(true);
+                    //   Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
+
+                } else if (dataSnapshot.getValue().equals("TAT")) {
+                    swOnOff3.setChecked(false);
+                    //   Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+        myFirebase.child("DEN 4").child("STATE").child("TRANG THAI").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue().equals("SANG")) {
+                    swOnOff4.setChecked(true);
+                    //   Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
+                } else if (dataSnapshot.getValue().equals("TAT")) {
+                    swOnOff4.setChecked(false);
+                    //   Toast.makeText(MainActivity.this, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
+                }
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
